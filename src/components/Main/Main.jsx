@@ -1,3 +1,5 @@
+//we abandon this to learn class syntax
+//now we call it MainClass.jsx
 import React from "react";
 import { mockData } from "../../mockData";
 import "./main.scss";
