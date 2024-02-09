@@ -7,4 +7,7 @@
   --teal-100: #005352;
   --teal-300: #113e3c;
   --teal-grey: #b6e6e6;
+  --card-width: 20rem;
+  --card-gap: 2rem;
+  --card-padding: 2rem;
 }
