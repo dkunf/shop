@@ -40,6 +40,9 @@
       transform: scale(2);
       cursor: pointer;
     }
+    &:active {
+      opacity: 80%;
+    }
   }
   button {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,

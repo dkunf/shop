@@ -12,9 +12,10 @@ import Favorite from "./components/Favorite/Favorite";
 function App() {
   // const [tab, setTab] = useState("all"); //all, cart, favorite - nebereikia nes turim Routes
   const [cartData, setCartData] = useState([]);
+  const [nrInCart, setNrInCart] = useState(0);
   const [data, setData] = useState(mockData);
   const [fav, setFav] = useState([]);
-  const [toast, setToast] = useState("");
+  const [toast, setToast] = useState({ txt: "", colorCode: "ok" }); //ok or warning
 
   const handleAddToCart = (item) => {
     let titles = cartData.map((el) => el.title);
@@ -22,12 +23,19 @@ function App() {
     if (!titles.includes(item.title)) {
       //pridedam i cart
       setCartData([...cartData, item]);
-      setToast(`${item.title} item is added to the Cart`);
+      setToast({
+        txt: `${item.title} item is added to the Cart`,
+        colorCode: "ok",
+      });
+      setNrInCart(nrInCart + 1);
       //istraukiam is main
       const filteredData = data.filter((el) => el.title !== item.title);
       setData(filteredData);
     } else {
-      setToast(`${item.title} is already in your cart!`);
+      setToast({
+        txt: `${item.title} is already in your cart!`,
+        colorCode: "warning",
+      });
     }
     setTimeout(() => {
       setToast("");
@@ -36,7 +44,11 @@ function App() {
 
   const handleRemoveFromCart = (item) => {
     setData([...data, item]);
-    setToast(`${item.title} item is removed from the Cart`);
+    setToast({
+      txt: `${item.title} item is removed from the Cart`,
+      colorCode: "ok",
+    });
+    setNrInCart(nrInCart - 1);
     setTimeout(() => {
       setToast("");
     }, 1500);
@@ -47,21 +59,24 @@ function App() {
   const handleRemoveEverything = () => {
     setData(mockData);
     setCartData([]);
-    setToast(`Everything is removed from the Cart`);
+    setToast({ txt: `Everything is removed from the Cart`, colorCode: "ok" });
+    setNrInCart(0);
     setTimeout(() => {
       setToast("");
     }, 1500);
   };
 
   const handleAddFav = (item) => {
-    console.log(item);
     let titles = fav.map((el) => el.title);
 
     if (!titles.includes(item.title)) {
       setFav([...fav, item]);
-      setToast(`Favorite ${item.title} added`);
+      setToast({ txt: `${item.title} added to favorites`, colorCode: "ok" });
     } else {
-      setToast(`${item.title} is already in your favorites!`);
+      setToast({
+        txt: `${item.title} is already in your favorites!`,
+        colorCode: "warning",
+      });
     }
 
     setTimeout(() => {
@@ -70,8 +85,10 @@ function App() {
   };
   return (
     <>
-      <Navbar />
-      {toast === "" ? null : <Toast txt={toast}></Toast>}
+      <Navbar nrInCart={nrInCart} />
+      {toast === "" ? null : (
+        <Toast txt={toast.txt} colorCode={toast.colorCode}></Toast>
+      )}
       <Routes>
         <Route
           path="/"

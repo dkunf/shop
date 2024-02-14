@@ -3,7 +3,6 @@ import "./favorite.scss";
 import { Card } from "../Card/Card";
 
 function Favorite({ fav, clickAction }) {
-  console.log(fav);
   return (
     <main className="main-container">
       {!fav?.length ? <h1>Nieko nėra...</h1> : null}

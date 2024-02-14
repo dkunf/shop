@@ -27,6 +27,13 @@
       &.active {
         color: var(--orange-300);
       }
+      .badge {
+        padding: 0 0.5rem;
+        margin-left: 0.3rem;
+        border-radius: 20%;
+        background-color: var(--orange-100);
+        color: var(--teal-100);
+      }
     }
   }
 }

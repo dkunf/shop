@@ -2,11 +2,18 @@
   position: fixed;
   left: 50%;
   top: 50%;
-  background-color: var(--orange-100);
+  // background-color: var(--orange-100);
   color: var(--light-font);
   font-size: 2rem;
   padding: 2rem;
+  text-align: center;
   border-radius: 0 2rem;
   z-index: 2;
   transform: translate(-50%);
+}
+.ok {
+  background-color: var(--ok);
+}
+.warning {
+  background-color: var(--warning);
 }

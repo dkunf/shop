@@ -10,5 +10,6 @@
   --card-width: 20rem;
   --card-gap: 2rem;
   --card-padding: 2rem;
-  --warning: #ffa500;
+  --warning: #ff5500d0;
+  --ok: #177414d0;
 }
