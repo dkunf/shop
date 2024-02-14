@@ -29,7 +29,7 @@ class Main extends React.Component {
         data: sortedData,
       });
     };
-    //next i6kelti button i atskyra komponenta
+    //next gal iškelti button i atskira komponenta
     return (
       <>
         {" "}

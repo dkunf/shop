@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "./navbar.scss";
 
 function Navbar() {
@@ -6,8 +7,15 @@ function Navbar() {
     <nav className="nav-container">
       <h1>My Shop</h1>
       <ul>
-        <li>All items</li>
-        <li>favourites</li>
+        <li>
+          <NavLink to="/">All items</NavLink>
+        </li>
+        <li>
+          <NavLink to="/my-cart">My Cart</NavLink>
+        </li>
+        <li>
+          <NavLink to="/fav">Favorite</NavLink>
+        </li>
       </ul>
     </nav>
   );
