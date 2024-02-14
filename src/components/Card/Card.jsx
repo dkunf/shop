@@ -1,6 +1,16 @@
 import React from "react";
 import "./card.scss";
-export function Card({ title, src, description, setCartData, isInsideCart }) {
+import Heart from "../Heart/Heart";
+
+export function Card({
+  title,
+  src,
+  description,
+  clickAction,
+  isInsideCart,
+  handleAddFav,
+  isInsideFav,
+}) {
   // export function Card(props) {
   // console.log(props.src);
   //galima ir destructure
@@ -12,9 +22,18 @@ export function Card({ title, src, description, setCartData, isInsideCart }) {
       <h3>{title}</h3>
       <img src={src} alt={src} />
       <p>{description}</p>
+      {isInsideFav ? null : (
+        <Heart
+          title={title}
+          src={src}
+          description={description}
+          handleAddFav={handleAddFav}
+        ></Heart>
+      )}
+
       <button
         onClick={() => {
-          setCartData({
+          clickAction({
             title,
             src,
             description,
