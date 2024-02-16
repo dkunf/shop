@@ -11,6 +11,7 @@ export function Card({
   handleAddFav,
   isInsideFav,
 }) {
+  console.log("Card");
   // export function Card(props) {
   // console.log(props.src);
   //galima ir destructure

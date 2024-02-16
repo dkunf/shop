@@ -1,6 +1,7 @@
 import React from "react";
 
 function SortBtns({ sorting }) {
+  console.log("SortBtns");
   return (
     <>
       <button

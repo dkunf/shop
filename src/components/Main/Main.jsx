@@ -1,20 +1,27 @@
 //we abandon this to learn class syntax
 //now we call it MainClass.jsx
-import React from "react";
+import React, { useContext } from "react";
 // import { mockData } from "../../mockData"; perkelem i App
 import "./main.scss";
 import { Card } from "../Card/Card";
 import { handleSort } from "../../utils/sortUtils";
+// import MeasureF from "../../utils/measureTiming";
 import SortBtns from "../Sort/SortBtns";
+import { AppContext } from "../../contexts/AppContext";
 
-function Main({ setCartData, data, setData, handleAddFav }) {
+function Main() {
+  const { data, setData, handleAddToCart, handleAddFav } =
+    useContext(AppContext);
   // console.log(mockData);
   // const [data, setData] = React.useState(mockData); -perkelem i App,nes norim paimta card isimti is Main kad jo nebegaletume add to cart, o ten yra func, kuri prideda i cart, o tada kartu galime ir isimti ten
+  console.log("Main");
 
   const handleSortData = (dir) => {
     setData(handleSort(data, dir));
   };
 
+  // const handleAddToCartPerf = (arg) => new MeasureF(handleAddToCart, arg);
+  // console.log(handleAddToCartPerf.timing);
   return (
     <>
       <div className="filtrai">
@@ -30,12 +37,17 @@ function Main({ setCartData, data, setData, handleAddFav }) {
             key={el.title}
             title={el.title}
             description={el.description}
-            clickAction={setCartData}
+            clickAction={handleAddToCart}
             handleAddFav={handleAddFav}
           />
         ))}
-        {/* Pasirodo react supranta masyva paduodama 
-      jam kaip atskiras eilutes!! */}
+        {/* Pasirodo react supranta masyva kaip atskiras eilutes!! 
+        pvz gali paduoti {[<button>1</button>,<button>2</button>,<button>3</button>]}
+        ir jis traktuos kaip
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        */}
       </main>
     </>
   );

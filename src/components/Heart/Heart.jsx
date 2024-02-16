@@ -1,6 +1,7 @@
 import React from "react";
 
 function Heart({ title, handleAddFav, src, description }) {
+  console.log("Heart");
   return (
     <div
       onClick={() => {

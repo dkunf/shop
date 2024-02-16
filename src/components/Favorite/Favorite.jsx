@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./favorite.scss";
 import { Card } from "../Card/Card";
+import { AppContext } from "../../contexts/AppContext";
 
-function Favorite({ fav, clickAction }) {
+function Favorite() {
+  console.log("Favorite");
+  const { fav, handleAddToCart } = useContext(AppContext);
   return (
     <main className="main-container">
       {!fav?.length ? <h1>Nieko nėra...</h1> : null}
@@ -15,7 +18,7 @@ function Favorite({ fav, clickAction }) {
           title={el.title}
           description={el.description}
           isInsideFav={true}
-          clickAction={clickAction}
+          clickAction={handleAddToCart}
         />
       ))}
       {/* Pasirodo react supranta masyva paduodama 

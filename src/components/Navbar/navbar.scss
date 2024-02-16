@@ -26,6 +26,7 @@
       &:active,
       &.active {
         color: var(--orange-300);
+        text-decoration: underline;
       }
       .badge {
         padding: 0 0.5rem;
