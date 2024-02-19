@@ -17,7 +17,6 @@ function Favorite() {
           key={el.title}
           title={el.title}
           description={el.description}
-          isInsideFav={true}
           clickAction={handleAddToCart}
         />
       ))}

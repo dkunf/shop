@@ -14,12 +14,12 @@
     margin: 0;
     font-size: 2rem;
     color: var(--teal-grey);
-    transform-origin: bottom left;
+    transform-origin: top left;
     transform: rotate(90deg);
     //  translate(2rem, 0.5rem);
     position: absolute;
-    top: -2rem;
-    left: -2rem;
+    top: 0;
+    left: 0;
   }
   img {
     border-radius: 0 2rem;

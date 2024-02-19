@@ -21,5 +21,4 @@ function Heart({ title, src, description }) {
     </div>
   );
 }
-// &#x2661; empty heart
 export default Heart;

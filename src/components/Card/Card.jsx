@@ -2,14 +2,7 @@ import React from "react";
 import "./card.scss";
 import Heart from "../Heart/Heart";
 
-export function Card({
-  title,
-  src,
-  description,
-  clickAction,
-  isInsideCart,
-  isInsideFav,
-}) {
+export function Card({ title, src, description, clickAction, isInsideCart }) {
   console.log("Card");
   // export function Card(props) {
   // console.log(props.src);
@@ -22,10 +15,7 @@ export function Card({
       <h3>{title}</h3>
       <img src={src} alt={src} />
       <p>{description}</p>
-      {isInsideFav ? null : (
-        <Heart title={title} src={src} description={description}></Heart>
-      )}
-
+      <Heart title={title} src={src} description={description}></Heart>
       <button
         onClick={() => {
           clickAction({
