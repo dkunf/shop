@@ -8,7 +8,6 @@ export function Card({
   description,
   clickAction,
   isInsideCart,
-  handleAddFav,
   isInsideFav,
 }) {
   console.log("Card");
@@ -24,12 +23,7 @@ export function Card({
       <img src={src} alt={src} />
       <p>{description}</p>
       {isInsideFav ? null : (
-        <Heart
-          title={title}
-          src={src}
-          description={description}
-          handleAddFav={handleAddFav}
-        ></Heart>
+        <Heart title={title} src={src} description={description}></Heart>
       )}
 
       <button

@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import "./navbar.scss";
 import { AppContext } from "../../contexts/AppContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
   const { nrInCart } = useContext(AppContext);
@@ -15,7 +17,8 @@ function Navbar() {
         </li>
         <li>
           <NavLink to="/my-cart">
-            My Cart: <span className="badge">{nrInCart}</span>
+            <FontAwesomeIcon icon={faBasketShopping} className="basket-icon" />
+            <span className="badge">{nrInCart}</span>
           </NavLink>
         </li>
         <li>

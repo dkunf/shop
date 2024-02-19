@@ -13,6 +13,7 @@
   ul {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     column-gap: 2rem;
     li,
     a {
@@ -26,14 +27,14 @@
       &:active,
       &.active {
         color: var(--orange-300);
-        text-decoration: underline;
       }
       .badge {
         padding: 0 0.5rem;
         margin-left: 0.3rem;
         border-radius: 20%;
-        background-color: var(--orange-100);
-        color: var(--teal-100);
+      }
+      .basket-icon {
+        font-size: 1.5rem;
       }
     }
   }

@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../../contexts/AppContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import "./heart.scss";
 
-function Heart({ title, handleAddFav, src, description }) {
+function Heart({ title, src, description }) {
+  const { toggleFav, fav } = useContext(AppContext);
+
+  const isAlreadyInFav = fav.map((el) => el.title).includes(title);
+
   console.log("Heart");
   return (
     <div
       onClick={() => {
-        handleAddFav({ src, title, description });
+        toggleFav({ src, title, description });
       }}
-      className="heart"
+      className={`heart ${isAlreadyInFav ? "red" : "grey"}`}
     >
-      &#10084;&#65039;
+      <FontAwesomeIcon icon={faHeart} />
     </div>
   );
 }
-
+// &#x2661; empty heart
 export default Heart;

@@ -11,7 +11,6 @@ function MyCart() {
     setCartData,
     handleRemoveEverything,
     handleRemoveFromCart,
-    handleAddFav,
   } = useContext(AppContext);
 
   const sortCart = (dir) => {
@@ -37,7 +36,6 @@ function MyCart() {
             description={description}
             clickAction={handleRemoveFromCart}
             isInsideCart={true}
-            handleAddFav={handleAddFav}
           />
         ))}
       </main>

@@ -53,7 +53,7 @@ function AppContextProvider({ children }) {
     clearToast();
   };
 
-  const handleAddFav = (item) => {
+  const toggleFav = (item) => {
     let titles = fav.map((el) => el.title);
 
     if (!titles.includes(item.title)) {
@@ -63,8 +63,10 @@ function AppContextProvider({ children }) {
         colorCode: "ok",
       });
     } else {
+      const filteredFav = fav.filter((el) => el.title !== item.title);
+      setFav(filteredFav);
       setToast({
-        txt: `${item.title} is already in the favorites!`,
+        txt: `${item.title} was removed from the favorites`,
         colorCode: "warning",
       });
     }
@@ -93,7 +95,7 @@ function AppContextProvider({ children }) {
         handleAddToCart,
         handleRemoveFromCart,
         handleRemoveEverything,
-        handleAddFav,
+        toggleFav,
       }}
     >
       {children}

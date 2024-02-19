@@ -10,8 +10,7 @@ import SortBtns from "../Sort/SortBtns";
 import { AppContext } from "../../contexts/AppContext";
 
 function Main() {
-  const { data, setData, handleAddToCart, handleAddFav } =
-    useContext(AppContext);
+  const { data, setData, handleAddToCart } = useContext(AppContext);
   // console.log(mockData);
   // const [data, setData] = React.useState(mockData); -perkelem i App,nes norim paimta card isimti is Main kad jo nebegaletume add to cart, o ten yra func, kuri prideda i cart, o tada kartu galime ir isimti ten
   console.log("Main");
@@ -38,7 +37,6 @@ function Main() {
             title={el.title}
             description={el.description}
             clickAction={handleAddToCart}
-            handleAddFav={handleAddFav}
           />
         ))}
         {/* Pasirodo react supranta masyva kaip atskiras eilutes!! 
