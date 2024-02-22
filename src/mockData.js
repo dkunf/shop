@@ -17,6 +17,7 @@ import Carrot from "./files/carrot.avif";
 import Broccoli from "./files/broccoli.avif";
 import Grapes from "./files/grapes.avif";
 import Tomato from "./files/tomato.avif";
+import Pepper from "./files/pepper.avif";
 
 export const mockData = [
   {
@@ -87,6 +88,7 @@ export const mockData = [
   },
   {
     title: "Bell Pepper",
+    src: Pepper,
     description: "Color your meals with the crunch of bell peppers.",
   },
   {
