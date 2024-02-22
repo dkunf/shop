@@ -1,6 +1,8 @@
 import React from "react";
 import "./card.scss";
 import Heart from "../Heart/Heart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 
 export function Card({ title, src, description, clickAction, isInsideCart }) {
   console.log("Card");
@@ -9,7 +11,7 @@ export function Card({ title, src, description, clickAction, isInsideCart }) {
   //galima ir destructure
   //  function Card({title,description}){} ir naudoti jau tiesiog title ir description
   return (
-    <div className="card">
+    <div className="my-card">
       {/* <div className="img-container"></div> */}
 
       <h3>{title}</h3>
@@ -25,7 +27,11 @@ export function Card({ title, src, description, clickAction, isInsideCart }) {
           });
         }}
       >
-        {isInsideCart ? "Remove From Cart" : "Add To Cart"}
+        {isInsideCart ? (
+          "Remove From Cart"
+        ) : (
+          <FontAwesomeIcon icon={faCartPlus} className="addToCart" />
+        )}
       </button>
     </div>
   );

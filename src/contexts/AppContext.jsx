@@ -67,7 +67,7 @@ function AppContextProvider({ children }) {
       setFav(filteredFav);
       setToast({
         txt: `${item.title} was removed from the favorites`,
-        colorCode: "warning",
+        colorCode: "ok",
       });
     }
     clearToast();

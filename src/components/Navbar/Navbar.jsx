@@ -4,10 +4,12 @@ import "./navbar.scss";
 import { AppContext } from "../../contexts/AppContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import User from "../User/User";
 
 function Navbar() {
   const { nrInCart } = useContext(AppContext);
   console.log("Navbar");
+
   return (
     <nav className="nav-container">
       <h1>My Shop</h1>
@@ -18,13 +20,14 @@ function Navbar() {
         <li>
           <NavLink to="/my-cart">
             <FontAwesomeIcon icon={faBasketShopping} className="basket-icon" />
-            <span className="badge">{nrInCart}</span>
+            <span className="my-badge">{nrInCart}</span>
           </NavLink>
         </li>
         <li>
           <NavLink to="/fav">Favorite</NavLink>
         </li>
       </ul>
+      <User />
     </nav>
   );
 }
