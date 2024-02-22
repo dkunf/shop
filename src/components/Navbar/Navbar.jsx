@@ -26,8 +26,8 @@ function Navbar() {
         <li>
           <NavLink to="/fav">Favorite</NavLink>
         </li>
+        <User className="user-styles" />
       </ul>
-      <User />
     </nav>
   );
 }
