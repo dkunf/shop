@@ -1,13 +1,40 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { mockData } from "../mockData";
 export const AppContext = createContext();
 
 function AppContextProvider({ children }) {
-  const [data, setData] = useState(mockData);
-  const [cartData, setCartData] = useState([]);
-  const [nrInCart, setNrInCart] = useState(0);
-  const [fav, setFav] = useState([]);
+  const [data, setData] = useState(
+    JSON.parse(localStorage.getItem("data")) || mockData
+  );
+  const [cartData, setCartData] = useState(
+    JSON.parse(localStorage.getItem("cartData")) || []
+  );
+  const [fav, setFav] = useState(JSON.parse(localStorage.getItem("fav")) || []);
   const [toast, setToast] = useState({ txt: "", colorCode: "ok" }); //ok or warning
+  const [nrInCart, setNrInCart] = useState(cartData.length);
+
+  // useEffect(() => {
+  //   addToStorage("data", data);
+  //   addToStorage("cartData", cartData);
+  // }, [data, cartData]);
+
+  // useEffect(() => {
+  //   addToStorage("fav", fav);
+  // }, [fav]);
+
+  useEffect(() => {
+    const setDataToLocalStorage = () => {
+      addToStorage("data", data);
+      addToStorage("cartData", cartData);
+      addToStorage("fav", fav);
+    };
+    // Call the function when the component is about to unload
+    window.addEventListener("beforeunload", setDataToLocalStorage);
+    return () => {
+      // Cleanup: remove the event listener when component unmounts
+      window.removeEventListener("beforeunload", setDataToLocalStorage);
+    };
+  });
 
   const handleAddToCart = (item) => {
     console.log("adding to cart");
@@ -16,6 +43,7 @@ function AppContextProvider({ children }) {
     if (!titles.includes(item.title)) {
       //pridedam i cart
       setCartData([...cartData, item]);
+
       setToast({
         txt: `${item.title} item was added to the Cart`,
         colorCode: "ok",
@@ -72,6 +100,10 @@ function AppContextProvider({ children }) {
     }
     clearToast();
   };
+
+  function addToStorage(key, val) {
+    localStorage.setItem(key, JSON.stringify(val));
+  }
 
   function clearToast() {
     setTimeout(() => {
