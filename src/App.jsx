@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.scss";
 
@@ -8,10 +8,18 @@ import Main from "./components/Main/Main";
 import MyCart from "./components/Cart/MyCart";
 import Favorite from "./components/Favorite/Favorite";
 import { AppContext } from "./contexts/AppContext";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Preferences from "./components/Preferences/Preferences";
+import Login from "./components/Login/Login";
 
 function App() {
   const { toast } = useContext(AppContext);
-  // const [tab, setTab] = useState("all"); //all, cart, favorite - nebereikia nes turim Routes
+  const [token, setToken] = useState();
+
+  if (!token) {
+    return <Login setToken={setToken} />;
+  }
+
   console.log("App");
 
   return (
@@ -21,9 +29,11 @@ function App() {
         <Toast txt={toast.txt} colorCode={toast.colorCode}></Toast>
       )}
       <Routes>
-        <Route path="/" element={<Main />} />
         <Route path="/my-cart" element={<MyCart />} />
         <Route path="/fav" element={<Favorite />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/preferences" element={<Preferences />} />
+        <Route path="/" element={<Main />} />
       </Routes>
 
       {/* Situs pakeite Route */}
