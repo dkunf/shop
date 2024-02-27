@@ -26,7 +26,15 @@ function Navbar() {
         <li>
           <NavLink to="/fav">Favorite</NavLink>
         </li>
-        <User className="user-styles" />
+        <li>
+          <User className="user-styles" />
+        </li>
+        <li>
+          <NavLink to="/dashboard">Dashboard</NavLink>
+        </li>
+        <li>
+          <NavLink to="/preferences">Preferences</NavLink>
+        </li>
       </ul>
     </nav>
   );

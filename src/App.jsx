@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.scss";
 
@@ -7,18 +7,13 @@ import Toast from "./components/Toast/Toast";
 import Main from "./components/Main/Main";
 import MyCart from "./components/Cart/MyCart";
 import Favorite from "./components/Favorite/Favorite";
-import { AppContext } from "./contexts/AppContext";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Preferences from "./components/Preferences/Preferences";
-import Login from "./components/Login/Login";
+
+import { AppContext } from "./contexts/AppContext";
 
 function App() {
   const { toast } = useContext(AppContext);
-  const [token, setToken] = useState();
-
-  if (!token) {
-    return <Login setToken={setToken} />;
-  }
 
   console.log("App");
 

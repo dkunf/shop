@@ -13,6 +13,10 @@ function AppContextProvider({ children }) {
   const [toast, setToast] = useState({ txt: "", colorCode: "ok" }); //ok or warning
   const [nrInCart, setNrInCart] = useState(cartData.length);
 
+  const [token, setToken] = useState(
+    JSON.parse(localStorage.getItem("token")) || null
+  );
+
   // useEffect(() => {
   //   addToStorage("data", data);
   //   addToStorage("cartData", cartData);
@@ -128,6 +132,8 @@ function AppContextProvider({ children }) {
         handleRemoveFromCart,
         handleRemoveEverything,
         toggleFav,
+        token,
+        setToken,
       }}
     >
       {children}
