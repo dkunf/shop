@@ -20,11 +20,13 @@ function App() {
       {toast === "" ? null : (
         <Toast txt={toast.txt} colorCode={toast.colorCode}></Toast>
       )}
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/my-cart" element={<MyCart />} />
-        <Route path="/fav" element={<Favorite />} />
-      </Routes>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/my-cart" element={<MyCart />} />
+          <Route path="/fav" element={<Favorite />} />
+        </Routes>
+      </div>
 
       {/* Situs pakeite Route */}
       {/* {tab === "all" && (
