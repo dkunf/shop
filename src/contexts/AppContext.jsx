@@ -1,10 +1,12 @@
 import React, { createContext, useState, useEffect } from "react";
-import { mockData } from "../mockData";
+import { cfg } from "../cfg/cfg";
+// import { mockData } from "../mockData";
 export const AppContext = createContext();
 
 function AppContextProvider({ children }) {
   const [data, setData] = useState(
-    JSON.parse(localStorage.getItem("data")) || mockData
+    []
+    // JSON.parse(localStorage.getItem("data")) || mockData
   );
   const [cartData, setCartData] = useState(
     JSON.parse(localStorage.getItem("cartData")) || []
@@ -21,6 +23,23 @@ function AppContextProvider({ children }) {
   // useEffect(() => {
   //   addToStorage("fav", fav);
   // }, [fav]);
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      // const response = await fetch("http://localhost:3000/product");
+      const response = await fetch(`${cfg.API.HOST}/product`);
+
+      console.log("response", response);
+      const prods = await response.json();
+      console.log("prods", prods);
+
+      const filteredData = prods.filter(
+        (item) => !cartData.some((cartItem) => cartItem.title === item.title)
+      );
+
+      setData(filteredData);
+    };
+    fetchAllProducts();
+  }, []);
 
   useEffect(() => {
     const setDataToLocalStorage = () => {

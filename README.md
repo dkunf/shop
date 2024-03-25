@@ -1,3 +1,6 @@
+<!-- backend -->
+<!-- https://vaisiu-api.vercel.app/product -->
+
 uses local fileserver to serve pictures for this "shop" because local image paths are changed during build process so it cannot be used...probably...
 
 So i serve images from another port 3232 on localhost.
