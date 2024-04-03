@@ -8,6 +8,7 @@ import Main from "./components/Main/Main";
 import MyCart from "./components/Cart/MyCart";
 import Favorite from "./components/Favorite/Favorite";
 import { AppContext } from "./contexts/AppContext";
+import Admin from "./components/Admin/Admin";
 
 function App() {
   const { toast } = useContext(AppContext);
@@ -25,6 +26,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/my-cart" element={<MyCart />} />
           <Route path="/fav" element={<Favorite />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </div>
 

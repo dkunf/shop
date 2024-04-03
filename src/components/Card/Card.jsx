@@ -7,7 +7,7 @@ import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 export function Card({ title, src, description, clickAction, isInsideCart }) {
   console.log("Card");
   // export function Card(props) {
-  // console.log(props.src);
+  console.log("src of card: ", src);
   //galima ir destructure
   //  function Card({title,description}){} ir naudoti jau tiesiog title ir description
   return (

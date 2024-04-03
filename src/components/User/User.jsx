@@ -15,7 +15,7 @@ function User() {
       if (typeof obj[key] !== "object") {
         if (key !== "id") {
           tmp.push(
-            <p style={{ paddingLeft: padding + "px" }}>
+            <p key={`${key}${padding}`} style={{ paddingLeft: padding + "px" }}>
               {key} : {obj[key]}
             </p>
           );

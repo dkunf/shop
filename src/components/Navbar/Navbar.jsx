@@ -5,6 +5,7 @@ import { AppContext } from "../../contexts/AppContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import User from "../User/User";
+import AdminUser from "../AdminUser/AdminUser";
 
 function Navbar() {
   const { nrInCart } = useContext(AppContext);
@@ -26,7 +27,11 @@ function Navbar() {
         <li>
           <NavLink to="/fav">Favorite</NavLink>
         </li>
-        <User className="user-styles" />
+        <li>
+          <NavLink to="/admin">Admin</NavLink>
+        </li>
+        {/* <User className="user-styles" /> */}
+        <AdminUser />
       </ul>
     </nav>
   );
