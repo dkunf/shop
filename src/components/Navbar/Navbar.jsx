@@ -6,9 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import User from "../User/User";
 import AdminUser from "../AdminUser/AdminUser";
+import useAuth from "../../hooks/useAuth";
 
 function Navbar() {
   const { nrInCart } = useContext(AppContext);
+  const { token } = useAuth();
   console.log("Navbar");
 
   return (
@@ -27,9 +29,11 @@ function Navbar() {
         <li>
           <NavLink to="/fav">Favorite</NavLink>
         </li>
-        <li>
-          <NavLink to="/admin">Admin</NavLink>
-        </li>
+        {token && (
+          <li>
+            <NavLink to="/admin">Admin</NavLink>
+          </li>
+        )}
         {/* <User className="user-styles" /> */}
         <AdminUser />
       </ul>
