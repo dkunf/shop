@@ -10,7 +10,8 @@ import SortBtns from "../Sort/SortBtns";
 import { AppContext } from "../../contexts/AppContext";
 
 function Main() {
-  const { data, setData, handleAddToCart } = useContext(AppContext);
+  const { data, setData, handleAddToCart, loadingProducts } =
+    useContext(AppContext);
   const [searchText, setSearchText] = useState("");
   // console.log(mockData);
   // const [data, setData] = React.useState(mockData); -perkelem i App,nes norim paimta card isimti is Main kad jo nebegaletume add to cart, o ten yra func, kuri prideda i cart, o tada kartu galime ir isimti ten
@@ -40,7 +41,8 @@ function Main() {
         </div>
       </div>
       <main className="main-container">
-        {!data?.length ? <h1>Nieko nėra...</h1> : null}
+        {!data?.length && loadingProducts && <h1>Getting Products</h1>}
+        {!data?.length && !loadingProducts ? <h1>Nieko nėra...</h1> : null}
 
         {/* vow, react array -> eilutes */}
         {data

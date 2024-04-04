@@ -4,7 +4,7 @@ import "./navbar.scss";
 import { AppContext } from "../../contexts/AppContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
-import User from "../User/User";
+// import User from "../User/User";
 import AdminUser from "../AdminUser/AdminUser";
 import useAuth from "../../hooks/useAuth";
 

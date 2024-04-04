@@ -1,8 +1,13 @@
+//todo auto-logout, when token expire
+//shouldn't reach route on path/admin writing...Protect routes.
+//make styles better, match
+
 import { useState, useContext } from "react";
 import React from "react";
 import { Form, Row, Col, Container, Button, Spinner } from "react-bootstrap";
 import { cfg } from "../../cfg/cfg";
 import { AppContext } from "../../contexts/AppContext";
+import useAuth from "../../hooks/useAuth";
 
 function Admin() {
   const [validated, setValidated] = useState(false);
@@ -10,6 +15,9 @@ function Admin() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { token, setToken } = useAuth();
+  const { fetchAllProducts, setShowLogin } = useContext(AppContext);
+
   // const [status, setStatus] = useState({
   //   colorCode: null, //'success' | 'error'
   //   message: "",
@@ -73,13 +81,39 @@ function Admin() {
         method: "POST",
         body: formData,
         headers: {
-          authorization: `Bearer  {token}`,
+          authorization: `Bearer  ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
       console.log("r", response);
+      if (response.ok) {
+        fetchAllProducts();
+
+        setToast({
+          txt: `new product created!cool...`,
+          colorCode: "ok",
+        });
+        clearToast();
+      } else {
+        if (response.status === 401) {
+          setToken(null);
+          setShowLogin(true);
+          alert("session expired, login please");
+        }
+        setToast({
+          txt: `nepavyko sukurti prod`,
+          colorCode: "warning",
+        });
+        clearToast();
+      }
+      throw new Error("nepavyko sukurti prod");
     } catch (err) {
       console.log(err);
+      setToast({
+        txt: `nepavyko prisijungti`,
+        colorCode: "warning",
+      });
+      clearToast();
     }
   };
   return (
