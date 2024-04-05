@@ -55,56 +55,195 @@ function AppContextProvider({ children }) {
     //then i can have copy of buffer array for json chunk and for file chunk to handle them separately
 
     const body8 = new Uint8Array(bodyAsBuffer);
-    //so lets setup  all constants that i need
-    const jsonMeta = { start: 0, end: 0, searchString: "" };
-    const fileMeta = { start: 0, end: 0, searchString: "", extension: "" };
+    //so lets setup  all constants that i need - i'll turn it to class later
+    const jsonMeta = {
+      start: 0,
+      end: 0,
+      searchStringU8aBegin: "",
+      searchStringU8aEnd: "",
+    };
+    const fileMeta = {
+      start: 0,
+      end: 0,
+      searchStringU8aBegin: "",
+      searchStringU8aEnd: "",
+      extension: "",
+    };
 
     //for now hardcoded, later would take it from headers...
     //checked how it goes with wireshark
-    const boundaryBytes = new TextEncoder().encode("--boundarystring\r\n");
-    jsonMeta.searchString = new TextEncoder().encode(
+    const boundaryBytesU8a = new TextEncoder().encode("--boundarystring\r\n");
+    jsonMeta.searchStringU8aBegin = new TextEncoder().encode(
       "Content-Type: application/json\r\n\r\n"
     );
-    fileMeta.searchString = new TextEncoder().encode(
+    fileMeta.searchStringU8aBegin = new TextEncoder().encode(
       "Content-Type: application/octet-stream\r\n"
     );
+    jsonMeta.searchStringU8aEnd = new TextEncoder().encode(
+      "\r\n--boundarystring"
+    );
+    fileMeta.searchStringU8aEnd = new TextEncoder().encode(
+      "\r\n--boundarystring"
+    );
+
+    jsonMeta.start = findJsonStartIndex();
+    jsonMeta.end = findJsonEndIndex();
+    fileMeta.start = findFileStartIndex();
+    fileMeta.end = findFileEndIndex();
+
+    console.log("jsonMeta");
+    console.log(jsonMeta);
+    console.log("");
+    console.log("fileMeta");
+    console.log(fileMeta);
 
     //json starts immediately after "--boundarystring\r\n"+"Content-Type: application/json\r\n\r\n{" including {
-    function findJsonStartIndex() {}
+    function findJsonStartIndex() {
+      if (!jsonMeta?.searchStringU8aBegin || !body8) return -1;
+      const searchString = [
+        ...Array.from(boundaryBytesU8a),
+        ...Array.from(jsonMeta.searchStringU8aBegin),
+      ];
+      const sBeginInd = findSubArrayFirstIndex(body8, searchString, 0);
+      return sBeginInd === -1 ? -1 : sBeginInd + searchString.length;
+    }
 
-    //json finishes with }\r\n
-    function findJsonEndIndex() {}
+    //json finishes with "\r\n--boundarystring"
+    //finds exact index, including the last }
+    function findJsonEndIndex() {
+      if (!jsonMeta?.searchStringU8aBegin || !body8) return -1;
+      const searchString = Array.from(jsonMeta.searchStringU8aEnd);
+      const sEndInd = findSubArrayFirstIndex(
+        body8,
+        searchString,
+        jsonMeta.start
+      );
+      return sEndInd === -1 ? -1 : sEndInd - 1;
+    }
 
     //file starts immediately after "--boundarystring\r\n"+"Content-Type: application/octet-stream\r\n"
-    function findFileStartIndex() {}
+    function findFileStartIndex() {
+      if (!fileMeta?.searchStringU8aBegin || !body8) return -1;
+      const searchString = [
+        ...Array.from(boundaryBytesU8a),
+        ...Array.from(fileMeta.searchStringU8aBegin),
+      ];
+      const sBeginInd = findSubArrayFirstIndex(body8, searchString, 0);
+      return sBeginInd === -1 ? -1 : sBeginInd + searchString.length;
+    }
 
     //file Ends with \r\n--boundarystring
-    function findFileEndIndex() {}
+    function findFileEndIndex() {
+      if (!fileMeta?.searchStringU8aBegin || !body8) return -1;
+      const searchString = Array.from(fileMeta.searchStringU8aEnd);
+      const sEndInd = findSubArrayFirstIndex(
+        body8,
+        searchString,
+        fileMeta.start
+      );
+      return sEndInd === -1 ? -1 : sEndInd - 1;
+    }
 
-    function getJsonBytes() {}
-    function getFileBytes() {}
-    function getFileExtensionString() {}
+    function findSubArrayFirstIndex(mainArray8, subArray8, startFrom) {
+      if (startFrom === -1) return Infinity;
+      const mainArray = Array.from(mainArray8);
+      const subArray = Array.from(subArray8); //it's ok,makes copy
+      for (let i = startFrom; i <= mainArray.length - subArray.length; i++) {
+        let found = true;
+        for (let j = 0; j < subArray.length; j++) {
+          if (mainArray[i + j] !== subArray[j]) {
+            found = false;
+            break;
+          }
+        }
+        if (found) {
+          return i; // Return the index of the first occurrence of subArray in mainArray
+        }
+      }
+      return -1; // Return -1 if subArray is not found in mainArray
+    }
 
-    function chunkUp8(cake8, boundary8) {
-      let strCake = JSON.stringify(Array.from(cake8)).replace(/[\[\]]/g, "");
-      let strBound = JSON.stringify(Array.from(boundary8)).replace(
-        /[\[\]]/g,
-        ""
+    function getJsonBytes() {
+      return body8.subarray(jsonMeta.start, jsonMeta.end + 1);
+    }
+    function getFileBytes() {
+      return body8.subarray(fileMeta.start, fileMeta.end + 1);
+    }
+
+    function getFileExtensionString(fileBin) {
+      let extension = "";
+      const extensionDictionary = {
+        avif: [
+          0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x69,
+          0x66, 0x00, 0x00, 0x00, 0x00,
+        ],
+        png: [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
+        // webp 0x52, 0x49, 0x46, 0x46, ?? ?? ?? ?? 0x57, 0x45, 0x42, 0x50	Google WebP image file, where ?? ?? ?? ?? is the file size.
+        webp: [0x52, 0x49, 0x46, 0x46],
+        jpg: [0xff, 0xd8, 0xff],
+      };
+      const chunk = Array.from(
+        body8.subarray(fileMeta.start, fileMeta.start + 16)
       );
 
-      console.log("strCake:::", strCake);
-      console.log("strBound:::", strBound);
+      const doesMatch = (arr, shorterArr) => {
+        const len = shorterArr.length;
+        let isMatching = true;
+        for (let ch = 0; ch < len; ch++) {
+          if (arr[ch] != shorterArr[ch]) {
+            isMatching = false;
+            break;
+          }
+        }
+        return isMatching;
+      };
 
-      const parts = strCake.split(strBound);
+      Object.keys(extensionDictionary).forEach((key) => {
+        extension = doesMatch(chunk, extensionDictionary[key]) && `${key}`;
+      });
 
-      // let ind = strCake.indexOf(strBound);
-      // let partJson = strCake.slice(0, ind);
-      // let partFile = strCake.slice(ind);
-
-      console.log("parts", parts);
-
-      return parts;
+      // extension =  isSame(chunk,extensionDictionary.avif) && ".avif"
+      // extension =  isSame(chunk,extensionDictionary.png) && ".png"
+      // extension =  isSame(chunk,extensionDictionary.webp) && ".webp"
+      // extension =  isSame(chunk,extensionDictionary.jpg) && ".jpg"
+      return extension;
     }
+
+    //test all fn
+    const fileBytes = getFileBytes();
+    const fileType = getFileExtensionString(fileBytes);
+    console.log("extension");
+    console.log(fileType);
+
+    //now we make blob out of binary file data with proper
+    //type and then create URL to reference
+
+    const fileBlob = new Blob([fileBytes], { type: `image/${fileType}` });
+    const imgUrl = URL.createObjectURL(fileBlob);
+    console.log("imgUrl:");
+    console.log(imgUrl);
+    //url works, vow!!!!
+
+    // function chunkUp8(cake8, boundary8) {
+    //   let strCake = JSON.stringify(Array.from(cake8)).replace(/[\[\]]/g, "");
+    //   let strBound = JSON.stringify(Array.from(boundary8)).replace(
+    //     /[\[\]]/g,
+    //     ""
+    //   );
+
+    //   console.log("strCake:::", strCake);
+    //   console.log("strBound:::", strBound);
+
+    //   const parts = strCake.split(strBound);
+
+    //   // let ind = strCake.indexOf(strBound);
+    //   // let partJson = strCake.slice(0, ind);
+    //   // let partFile = strCake.slice(ind);
+
+    //   console.log("parts", parts);
+
+    //   return parts;
+    // }
 
     /*
 //base64 is not easy, it adds bytes to the end to make total length divisible by 4 etc.
@@ -135,8 +274,8 @@ function AppContextProvider({ children }) {
     const parts = base64String.split(boundaryBase64.replace(/=+$/, ""));
     console.log("parts:", parts);
 */
-    let prods = null;
-    let b64FileData = null;
+    // let prods = null;
+    // let b64FileData = null;
     /*
     for (const part of parts) {
       const trimmedPart = part.trim();
